@@ -1,10 +1,16 @@
+import { debounce } from 'lodash';
+import { searchMovies } from './TMDb.js';
+
 /**
  * CONSTANTS
  */
 
 // Our Constants define the "types" of actions our reducer expects.
 export const CONSTANTS = {
-	QUERY_UPDATE: 'QUERY_UPDATE'
+	QUERY_UPDATE: 'QUERY_UPDATE',
+	QUERY_SEND: 'QUERY_SEND',
+	QUERY_SUCCESS: 'QUERY_SUCCESS',
+	QUERY_ERROR: 'QUERY_ERROR',
 }
 
 /**
@@ -12,10 +18,37 @@ export const CONSTANTS = {
  */
 
 // Action creators make it easier to share actions.
-export const updateQuery = searchQuery => ({
-	type: CONSTANTS.QUERY_UPDATE,
-	searchQuery
-})
+
+const sendQuery = debounce((searchQuery, dispatch) => {
+	
+	dispatch({
+		type: CONSTANTS.QUERY_SEND
+	})
+	
+	searchMovies(searchQuery)
+		.then(({ results }) => {
+			dispatch({
+				type: CONSTANTS.QUERY_SUCCESS,
+				results
+			})
+		})
+		.catch(error => {
+			dispatch({
+				type: CONSTANTS.QUERY_ERROR,
+				error
+			})
+		})
+}, 200)
+
+export const updateQuery = (searchQuery) => (dispatch, getState) => {
+	
+	dispatch({
+		type: CONSTANTS.QUERY_UPDATE,
+		searchQuery
+	});
+	
+	sendQuery(searchQuery, dispatch);
+}
 
 /**
  * REDUCER
@@ -33,6 +66,21 @@ export const reducer = function(state = defaultState, action) {
 		case CONSTANTS.QUERY_UPDATE:
 			return Object.assign({}, state, {
 				searchQuery: action.searchQuery
+			});
+		case CONSTANTS.QUERY_SEND:
+			return Object.assign({}, state, {
+				loading: true,
+				error: null
+			});
+		case CONSTANTS.QUERY_SUCCESS:
+			return Object.assign({}, state, {
+				loading: false,
+				results: action.results
+			});
+		case CONSTANTS.QUERY_ERROR:
+			return Object.assign({}, state, {
+				loading: false,
+				error: action.error
 			});
 		default: 
 			return state;

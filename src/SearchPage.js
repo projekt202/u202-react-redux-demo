@@ -5,44 +5,16 @@ import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 
 import { updateQuery } from './store.js';
-import { searchMovies } from './TMDb.js';
 import MovieCard from './MovieCard.js';
 
 class SearchPage extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false,
-            results: null
-        };
-    }
-
     onInputChange = (e) => {
-        const searchQuery = e.target.value;
-        this.props.updateQuery(searchQuery);
-        this.onSearch(searchQuery);
+        this.props.updateQuery(e.target.value);
     }
-
-    onSearch = debounce((searchQuery) => {
-        if (searchQuery.length > 0) {
-            
-            this.setState({
-                loading: true
-            });
-            
-            searchMovies(searchQuery).then(({ results }) => {
-                this.setState({ 
-                    results,
-                    loading: false 
-                });
-            });
-        }
-    }, 200)
 
     render() {
-        const { searchQuery } = this.props;
-        const { loading, results } = this.state;
+        const { loading, results, searchQuery } = this.props;
         return (
             <div>
                 <h2>The Movie Database</h2>
@@ -64,6 +36,8 @@ class SearchPage extends React.Component {
 
 SearchPage.propTypes = {
     searchQuery: PropTypes.string,
+    loading: PropTypes.bool,
+    results: PropTypes.array,
     updateQuery: PropTypes.func
 }
 
