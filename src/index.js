@@ -35,7 +35,8 @@ const reducer = function(state = defaultState, action) {
 }
 
 // Create the store.
-const store = createStore(reducer, /* preloadedState */)
+const store = createStore(reducer, /* preloadedState, */
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 console.log(store.getState())
 
 // We "dispatch" actions to the store.
