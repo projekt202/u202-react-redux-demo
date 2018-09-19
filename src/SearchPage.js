@@ -1,4 +1,5 @@
 import React from 'react';
+import { debounce } from 'lodash';
 import { searchMovies } from './TMDb.js';
 import MovieCard from './MovieCard.js';
 
@@ -18,7 +19,7 @@ class SearchPage extends React.Component {
         this.onSearch();
     }
 
-    onSearch = () => {
+    onSearch = debounce(() => {
         const { searchQuery } = this.state;
         if (searchQuery.length > 0) {
             
@@ -33,7 +34,7 @@ class SearchPage extends React.Component {
                 });
             });
         }
-    }
+    }, 200)
 
     render() {
         const { loading, results, searchQuery } = this.state;
