@@ -29,9 +29,9 @@ class SearchPage extends React.Component {
                 {loading && (
                     <div className="loading">Loading...</div>
                 )}
-                {results && results.length && (
-                    <MovieCard movie={results[0]} />
-                )}
+                {results && results.map(result => (
+			        <MovieCard key={result.id} movie={result} />
+                ))}
             </div>
         );
     }
