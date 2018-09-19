@@ -13,7 +13,7 @@ class MovieCard extends React.Component {
                 </div>
                 <div className="movie-card__content">
                     <h5 className="movie-card__title">
-                        <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
+                        <Link to={`/movie/${movie.id}/reviews`}>{movie.title}</Link>
                     </h5>
                     <ul className="movie-card__stats">
                         <li>Released {movie.release_date}</li>

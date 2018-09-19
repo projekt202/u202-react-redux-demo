@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink, Route } from 'react-router-dom';
 import { getMovie, getImageUrl } from './TMDb.js';
 
 class MovieDetails extends React.Component {
@@ -51,6 +51,18 @@ class MovieDetails extends React.Component {
                                 <dd className="col-sm-9">{movieDetails.vote_average || 'NA'}</dd>
                             </dl>
                             <p>{movieDetails.overview}</p>
+                            <ul className="nav nav-tabs">
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" activeClassName="active" to={`/movie/${movieDetails.id}/reviews`}>Reviews</NavLink>
+                                </li>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" activeClassName="active" to={`/movie/${movieDetails.id}/similar`}>Similar Movies</NavLink>
+                                </li>
+                            </ul>
+                            <div className="tab-content">
+                                <Route path="/movie/:id/reviews" component={(props) => <i>Reviews here...</i>} />
+                                <Route path="/movie/:id/similar" component={(props) => <i>Similar Movies here...</i>} />
+                            </div>
                         </div>
                     </div>
                 )}
