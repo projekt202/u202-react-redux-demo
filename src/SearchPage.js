@@ -7,18 +7,28 @@ class SearchPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: true,
-            results: null
+            loading: false,
+            results: null,
+            searchQuery: ''
         };
     }
 
-    componentDidMount() {
-        searchMovies('Star Wars').then(({ results }) => {
-            this.setState({ 
-                results,
-                loading: false 
+    onInputChange = (e) => {
+        this.setState({ searchQuery: e.target.value });
+    }
+
+    onButtonClick = (e) => {
+        if (this.state.searchQuery.length > 0) {
+            this.setState({
+                loading: true
             });
-        });
+            searchMovies(this.state.searchQuery).then(({ results }) => {
+                this.setState({ 
+                    results,
+                    loading: false 
+                });
+            });
+        }
     }
 
     render() {
@@ -26,6 +36,16 @@ class SearchPage extends React.Component {
         return (
             <div>
                 <h2>The Movie Database</h2>
+
+                <div className="form-row align-items-center my-4">
+                    <div className="col-auto">
+                        <input type="text" className="form-control" placeholder="Search for..." onChange={this.onInputChange} />
+                    </div>
+                    <div className="col-auto">
+                        <button type="button" className="btn btn-primary" onClick={this.onButtonClick}>Search</button>
+                    </div>
+                </div>
+
                 {loading && (
                     <div className="loading">Loading...</div>
                 )}
