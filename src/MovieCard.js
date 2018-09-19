@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { getImageUrl } from './TMDb.js';
 
 class MovieCard extends React.Component {
@@ -11,7 +12,9 @@ class MovieCard extends React.Component {
                     <img src={getImageUrl(movie.poster_path)} />
                 </div>
                 <div className="movie-card__content">
-                    <h5 className="movie-card__title">{movie.title}</h5>
+                    <h5 className="movie-card__title">
+                        <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
+                    </h5>
                     <ul className="movie-card__stats">
                         <li>Released {movie.release_date}</li>
                         <li>Rating {movie.vote_average}</li>

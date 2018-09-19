@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { getMovie, getImageUrl } from './TMDb.js';
 
 class MovieDetails extends React.Component {
@@ -12,7 +13,7 @@ class MovieDetails extends React.Component {
     }
 
     componentDidMount() {
-        getMovie(/* movie id */).then(movieDetails => {
+        getMovie(this.props.match.params.id).then(movieDetails => {
             this.setState({ 
                 movieDetails, 
                 loading: false 
@@ -25,9 +26,7 @@ class MovieDetails extends React.Component {
         return (
             <div>
                 <div className="my-2">
-                    {/* 
-                        Link back to SearchPage 
-                    */}
+                    <Link to="/">← Back to Search</Link>
                 </div>
                 {loading && "Loading..."}
                 {movieDetails && (
