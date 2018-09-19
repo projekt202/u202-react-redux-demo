@@ -15,14 +15,18 @@ class SearchPage extends React.Component {
 
     onInputChange = (e) => {
         this.setState({ searchQuery: e.target.value });
+        this.onSearch();
     }
 
-    onButtonClick = (e) => {
-        if (this.state.searchQuery.length > 0) {
+    onSearch = () => {
+        const { searchQuery } = this.state;
+        if (searchQuery.length > 0) {
+            
             this.setState({
                 loading: true
             });
-            searchMovies(this.state.searchQuery).then(({ results }) => {
+            
+            searchMovies(searchQuery).then(({ results }) => {
                 this.setState({ 
                     results,
                     loading: false 
@@ -32,18 +36,13 @@ class SearchPage extends React.Component {
     }
 
     render() {
-        const { loading, results } = this.state;
+        const { loading, results, searchQuery } = this.state;
         return (
             <div>
                 <h2>The Movie Database</h2>
 
-                <div className="form-row align-items-center my-4">
-                    <div className="col-auto">
-                        <input type="text" className="form-control" placeholder="Search for..." onChange={this.onInputChange} />
-                    </div>
-                    <div className="col-auto">
-                        <button type="button" className="btn btn-primary" onClick={this.onButtonClick}>Search</button>
-                    </div>
+                <div className="form-group">
+                    <input type="text" value={searchQuery} className="form-control" placeholder="Search for..." onChange={this.onInputChange} />
                 </div>
 
                 {loading && (
